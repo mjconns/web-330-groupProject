@@ -1,2 +1,1 @@
-# web-330-groupProject
-The repo for team Synergy's group project deliverables
+Repository for web-330-team Synergy group project Node.js #contributors Professor Krasso - Bellevue University Micah Connelly, Wendy, ERP - Bellevue University

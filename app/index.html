@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>JS quiz</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <!-- Local stylesheet -->
+  <link href="stylesheet.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+  <script>
+    $(document).ready(function () {
+      // Initialize Tooltip
+      $('[data-toggle="tooltip"]').tooltip();
+
+      // Add smooth scrolling to all links in navbar + footer link
+      $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+
+        // Make sure this.hash has a value before overriding default behavior
+        if (this.hash !== "") {
+
+          // Prevent default anchor click behavior
+          event.preventDefault();
+
+          // Store hash
+          var hash = this.hash;
+
+          // Using jQuery's animate() method to add smooth page scroll
+          // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 900, function () {
+
+            // Add hash (#) to URL when done scrolling (default click behavior)
+            window.location.hash = hash;
+          });
+        } // End if
+      });
+    })
+  </script>
+
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#myPage"><span class="glyphicon glyphicon-globe"></span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#devs">DEVS</a></li>
+          <li><a href="#quiz">QUIZ</a></li>
+          <li><a href="#results">RESULTS</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Container (The Devs) -->
+  <div id="devs" class="container text-center">
+    <h3>GROUP D's JAVASCRIPT QUIZ EXTRORDINAIRE</h3>
+    <p><em>We love JavaScript!</em></p>
+    <p>Through our learning at BU and as a collective group teaching eachother, we've put our combined skils together
+      for this project. Read more about each developer below or <a href="#quiz">begin the quiz now!</a></p>
+    <br>
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="text-center"><strong>Captain</strong></p><br>
+        <a href="#demo" data-toggle="collapse">
+          <img src="./images/micah.png" class="img-circle person" alt="Micah" width="255" height="255">
+        </a>
+        <div id="demo" class="collapse">
+          <p><strong>Name: </strong>Micah Connelly</p>
+          <p><strong>Favorite Food:</strong>Sheperd's Pie</p>
+          <p><strong>Bio: </strong>I’m a full-time employee and student. I enjoy being active; sports, hiking, camping, exercise, etc. I’m
+            also passionate about photography and travel. I’ve worked at TD Ameritrade for over 11 years now doing a
+            variety of things, with my most recent role as a developer-in-training. I’m learning on the job and through
+            BU about building web applications. So far I’ve experience with HTML, CSS, Angular/Typescript, SQL, and C#.
+            Still a relative novice, so I’m excited to learn and be able to do more!</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <p class="text-center"><strong>Lieutenant</strong></p><br>
+        <a href="#demo2" data-toggle="collapse">
+          <img src="./images/image2.jpg" class="img-circle person" alt="Wendy" width="255" height="255">
+        </a>
+        <div id="demo2" class="collapse">
+          <p>Full Name</p>
+          <p>Favorite Food</p>
+          <p>Bio</p>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <p class="text-center"><strong>Lieutenant</strong></p><br>
+        <a href="#demo3" data-toggle="collapse">
+          <img src="./images/image3.jpg" class="img-circle person" alt="Erica" width="255" height="255">
+        </a>
+        <div id="demo3" class="collapse">
+          <p>Full Name</p>
+          <p>Favorite Food</p>
+          <p>Bio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="begin">
+    <div class="jumbotron">
+      <h1 class="display-4">TAKE THE QUIZ, WHIZ</h1>
+      <p class="lead">See how you stack up against your peers and test your JavaScript knowledge today!</p>
+      <hr>
+      <div class="beginQuizBtn">
+        <a href="#quiz"><button type="button" class="btn btn-warning">Begin Quiz</button></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="quiz">
+    <div class="jumbotron">
+      <h1 class="display-4">Placeholder: QUIZ HERE</h1>
+      <p class="lead">This is where Erica will put her HTML</p>
+    </div>
+  </div>
+
+  <div class="container" id="results">
+    <div class="jumbotron">
+      <h1 class="display-4">Placeholder: RESULTS HERE</h1>
+      <p class="lead">This is where Wendy will put her HTML</p>
+    </div>
+  </div>
+
+  <!-- Footer/citation -->
+  <footer class="text-center">
+    <a class="up-arrow" href="#devs" data-toggle="tooltip" title="TO TOP">
+      <span class="glyphicon glyphicon-chevron-up"></span>
+    </a><br><br>
+    <p>Bootstrap Theme Made By <a href="https://www.w3schools.com" data-toggle="tooltip"
+        title="Visit w3schools">www.w3schools.com</a></p>
+  </footer>
+
+</body>
+
+</html>
