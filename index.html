@@ -48,6 +48,27 @@
         } // End if
       });
     })
+
+    // show/hide elements -- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
+    function startQuiz() {
+      var x = document.getElementById("quiz");
+      console.log(x);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+
+    function seeResults() {
+      var x = document.getElementById("results");
+      console.log(x);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
   </script>
 
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -63,7 +84,7 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#devs">DEVS</a></li>
-          <li><a href="#quiz">QUIZ</a></li>
+          <li><a href="#begin">QUIZ</a></li>
           <li><a href="#results">RESULTS</a></li>
         </ul>
       </div>
@@ -84,9 +105,10 @@
           <img src="./images/micah.png" class="img-circle person" alt="Micah" width="255" height="255">
         </a>
         <div id="demo" class="collapse">
-          <p><strong>Name: </strong>Micah Connelly</p>
-          <p><strong>Favorite Food:</strong>Sheperd's Pie</p>
-          <p><strong>Bio: </strong>I’m a full-time employee and student. I enjoy being active; sports, hiking, camping, exercise, etc. I’m
+          <p><strong>Name: </strong>Micah</p>
+          <p><strong>Favorite Food: </strong>Sheperd's Pie</p>
+          <p><strong>Bio: </strong>I’m a full-time employee and student. I enjoy being active; sports, hiking, camping,
+            exercise, etc. I’m
             also passionate about photography and travel. I’ve worked at TD Ameritrade for over 11 years now doing a
             variety of things, with my most recent role as a developer-in-training. I’m learning on the job and through
             BU about building web applications. So far I’ve experience with HTML, CSS, Angular/Typescript, SQL, and C#.
@@ -96,23 +118,39 @@
       <div class="col-sm-4">
         <p class="text-center"><strong>Lieutenant</strong></p><br>
         <a href="#demo2" data-toggle="collapse">
-          <img src="./images/image2.jpg" class="img-circle person" alt="Wendy" width="255" height="255">
+          <img src="./images/wendy.jpg" class="img-circle person" alt="Wendy" width="255" height="255">
         </a>
         <div id="demo2" class="collapse">
-          <p>Full Name</p>
-          <p>Favorite Food</p>
-          <p>Bio</p>
+          <p><strong>Name: </strong>Wendy</p>
+          <p><strong>Favorite Food: </strong></p>
+          <p><strong>Bio: </strong>Wendy first learned Web Design and Programming through an intensive 10 month Web
+            Programming Certificate program at Champlain College, St Lambert, Canada. More recently she received an
+            associate Degree in Internet Services from "Daytona State College” and is currently pursuing a bachelors in
+            Web Development online at Bellevue University.
+            When Wendy is not in front of her computer designing websites, you can find her in front of her computer
+            learning new web technologies. She recently started playing with Node and hopes to become good friends with
+            Express.
+          </p>
         </div>
       </div>
       <div class="col-sm-4">
         <p class="text-center"><strong>Lieutenant</strong></p><br>
         <a href="#demo3" data-toggle="collapse">
-          <img src="./images/image3.jpg" class="img-circle person" alt="Erica" width="255" height="255">
+          <img src="./images/erica.jpg" class="img-circle person" alt="Erica" width="255" height="255">
         </a>
         <div id="demo3" class="collapse">
-          <p>Full Name</p>
-          <p>Favorite Food</p>
-          <p>Bio</p>
+          <p><strong>Name: </strong>Erica</p>
+          <p<strong>Favorite food: </strong></p>
+            <p><strong>Bio: </strong>Erica is an ABA therapist and DSP who has been working in the field of human
+              services
+              for 7 years. She started her career out as a dietary aid at a nursing home while pursuing her associates
+              degree in General Sonography at a community college in Boston Ma. Later she transferred to a local college
+              where she then took up an interest in human behavior and psychology. As time went on, Erica felt like she
+              had done all she could with human services and wanted a change or more so what could she add on ! She has
+              wishes and dreams to develop apps for clients she serves and others who have mental disabilities. Erica
+              wishes to develop educational gaming apps and is now taking steps in the right direction by doing what she
+              loves. Erica is currently working with/ learning HTML,CSS, JavaScript while pursuing her Bachelor's degree
+              in web design/ web development online at Bellevue University.</p>
         </div>
       </div>
     </div>
@@ -124,23 +162,18 @@
       <p class="lead">See how you stack up against your peers and test your JavaScript knowledge today!</p>
       <hr>
       <div class="beginQuizBtn">
-        <a href="#quiz"><button type="button" class="btn btn-warning">Begin Quiz</button></a>
+        <a href="#quiz"><button type="button" class="btn btn-warning" onclick="startQuiz()">Begin Quiz</button></a>
       </div>
     </div>
   </div>
 
-  <div class="container" id="quiz">
-    <div class="jumbotron">
-      <h1 class="display-4">Placeholder: QUIZ HERE</h1>
-      <p class="lead">This is where Erica will put her HTML</p>
-    </div>
+  <div id="quiz" style="display: none;">
+    <embed type="text/html" src="./quiz.html" width="800" height="1300">
+    <a class="seeResultsStuff" href="#quiz"><button type="button" class="btn btn-warning" onclick="seeResults()">See Results</button></a>
   </div>
 
-  <div class="container" id="results">
-    <div class="jumbotron">
-      <h1 class="display-4">Placeholder: RESULTS HERE</h1>
-      <p class="lead">This is where Wendy will put her HTML</p>
-    </div>
+  <div id="results" style="display: none;">
+    <embed type="text/html" src="./results.html" width="800" height="1800">
   </div>
 
   <!-- Footer/citation -->
