@@ -64,7 +64,7 @@
     <button id="next">Next Question</button>
     <button id="submit" type="submit">Submit Quiz</button>
     <div id="results"></div>
-
+    <div data-bind="text: yourAnswer1"></div>
     <script>
         // build quiz starts here
         function buildQuiz() {
@@ -72,136 +72,46 @@
             var output = [];
 
             // for each question...
-            myQuestions.forEach(
-                (currentQuestion, questionNumber) => {
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+                // variable to store the list of possible answers
+                var answers = [];
 
-                    // variable to store the list of possible answers
-                    var answers = [];
+                // and for each available answer...
+                for (letter in currentQuestion.answers) {
 
-                    // and for each available answer...
-                    for (letter in currentQuestion.answers) {
-
-                        // ...add an HTML radio button
-                        answers.push(
-                            `<label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="question${questionNumber+1}" value="${letter}" data-bind = "checked: yourAnswer${questionNumber+1}">
-                ${letter} :
-                ${currentQuestion.answers[letter]}
-              </div>
-            </label> `);
-                    }
-
-                    // add this question and its answers to the output
-                    output.push(
-                        `<div class="form-group slide" id="question${questionNumber+1}">
-              <div class="question"> 
-                <h2>Question ${questionNumber+1}</h2>
-                ${currentQuestion.question} 
-              </div>
-
-              <div class="answers"> ${answers.join("")} </div>
-           </div>`);
+                    // ...add an HTML radio button
+                    answers.push(`<label><div class="form-check"><input class="form-check-input" type="radio" name="question${questionNumber+1}" value="${letter}" data-bind = "checked: yourAnswer${questionNumber+1}">
+                ${letter} :${currentQuestion.answers[letter]}</div></label>`);
                 }
 
-            );
+                // add this question and its answers to the output
+                output.push(`<div class="form-group slide" id="question${questionNumber+1}"><div class="question"><h2>Question ${questionNumber+1}</h2>${currentQuestion.question}</div><div class="answers"> ${answers.join("")} </div></div>`
+                );
+            });
 
             // finally combine our output list into one string of HTML and put it on the page
-            document.getElementById('quiz').innerHTML = (output).join('');
+            document.getElementById('quiz').innerHTML = output;
         }
         // build quiz ends here
 
         //
         function showResults() {
-            const answerContainers = quizContainer.querySelectorAll('.answers');
-            let numCorrect = 0;
-            var correctAnswer = '';
-            var output2 = [];
-            var resultsContainer = [];
-            var icon = '';
-            output2.push(`<div class="container-sm margin-top-40"><div class="accordion" id="accordionExample">`);
-            myQuestions.forEach((currentQuestion2, questionNumber2) => {
-                // find selected answer
-                const answerContainer = answerContainers[questionNumber2];
-                const selector = `input[name=question${questionNumber2}]:checked`;
-                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
 
-                const questionAnswers = [];
-                // if answer is correct
-
-
-                for (letter in currentQuestion2.answers) {
-
-                    // ...add an HTML radio button
-                    if (userAnswer === currentQuestion2.correctAnswer) {
-                        // add to the number of correct answers
-                        numCorrect++;
-                        icon = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="green bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z">
-                </path>
-              </svg>`;
-                    }
-                    // if answer is wrong or blank
-                    else {
-                        // color the answers red
-                        icon = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="red bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z">
-                </path>
-                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z">
-                </path>
-              </svg>`;
-                    }
-                    questionAnswers.push(
-                        `<div class="col-6"><p> ${icon} ${letter} : ${currentQuestion2.answers[letter]}</p></div>`
-                    );
-                }
-
-                // add this question and its answers to the output
-                output2.push(`<div class="card margin-top-20">
-              <div class="card-header" id="headin${questionNumber2}">
-                <h2 class="mb-0">
-                  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${questionNumber2}" aria-expanded="true" aria-controls="collapse${questionNumber2}">
-                    Question ${questionNumber2+1} 
-                  </button>
-                </h2>
-              </div>
-            </div>
-
-            <div id="collaps${questionNumber2}" class="collapse show" aria-labelledby="heading${questionNumber2}" data-parent="#accordionExample" style="">
-              <div class="card-body row">
-                <div class="col-md-12 jumbotron">
-                  <h4>${currentQuestion2.question}</h4>
-                </div>
-                <div class="col-md-12">
-                  <h4>Answers:</h4>
-                </div>
-                <div class="row col-md-12">
-                ${questionAnswers.join("")}
-                </div>
-                <div class="row col-md-12">
-                  <div data-bind = "text:checkAnswer${questionNumber2+1}"> Your Answer</div>
-                </div>  
-              </div>
-            </div>  
-
-          </div>    
-        </div>`);
-
-            });
-            resultsContainer.push(`${numCorrect} out of ${myQuestions.length} + ${output2};</div>`);
-            results.innerHTML = resultsContainer;
         }
+        //
 
         // show slide starts here
         function showSlide(n) {
             slides[currentSlide].classList.remove('active-slide');
             slides[n].classList.add('active-slide');
             currentSlide = n;
+
             if (currentSlide === 0) {
                 previousButton.style.display = 'none';
             } else {
                 previousButton.style.display = 'inline-block';
             }
+
             if (currentSlide === slides.length - 1) {
                 nextButton.style.display = 'none';
                 submitButton.style.display = 'inline-block';
@@ -218,6 +128,7 @@
         function showPreviousSlide() {
             showSlide(currentSlide - 1);
         }
+
         //show slide ends here
 
         // variables and constants
@@ -338,9 +249,7 @@
             }
         ];
 
-
         buildQuiz();
-
         const previousButton = document.getElementById("previous");
         const nextButton = document.getElementById("next");
         const slides = document.querySelectorAll(".slide");
@@ -353,7 +262,8 @@
         submitButton.addEventListener('click', showResults);
         previousButton.addEventListener("click", showPreviousSlide);
         nextButton.addEventListener("click", showNextSlide);
-        ///
+
+        ///VM
         function ViewModel() {
             yourAnswer1 = ko.observable("No selection made");
             yourAnswer2 = ko.observable("No selection made");
@@ -365,8 +275,8 @@
             yourAnswer8 = ko.observable("No selection made");
             yourAnswer9 = ko.observable("No selection made");
             yourAnswer10 = ko.observable("No selection made");
-
         }
+
         var vm = new ViewModel();
         ko.applyBindings(vm);
         //

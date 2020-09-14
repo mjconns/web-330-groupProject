@@ -1,1 +1,1 @@
-Repository for web-330-team Synergy group project Node.js #contributors Professor Krasso - Bellevue University Micah Connelly, Wendy, ERP - Bellevue University
+Repository for web-330-team Synergy group project Node.js #contributors Professor Krasso - Bellevue University Micah Connelly, Wendy, Erica - Bellevue University - site URL https://mjconns.github.io/web-330-groupProject/

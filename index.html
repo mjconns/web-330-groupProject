@@ -16,14 +16,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- adding wendy's code -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+  </script>
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
   <script>
     $(document).ready(function () {
-      // Initialize Tooltip
-      $('[data-toggle="tooltip"]').tooltip();
-
       // Add smooth scrolling to all links in navbar + footer link
       $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
 
@@ -169,20 +174,19 @@
 
   <div id="quiz" style="display: none;">
     <embed type="text/html" src="./quiz.html" width="800" height="1300">
-    <a class="seeResultsStuff" href="#quiz"><button type="button" class="btn btn-warning" onclick="seeResults()">See Results</button></a>
+    <!-- <a class="seeResultsStuff" href="#quiz"><button type="button" class="btn btn-warning" onclick="seeResults()">See
+        Results</button></a> -->
   </div>
 
-  <div id="results" style="display: none;">
+  <!-- <div id="results" style="display: none;">
     <embed type="text/html" src="./results.html" width="800" height="1800">
-  </div>
+  </div> -->
 
   <!-- Footer/citation -->
   <footer class="text-center">
     <a class="up-arrow" href="#devs" data-toggle="tooltip" title="TO TOP">
       <span class="glyphicon glyphicon-chevron-up"></span>
     </a><br><br>
-    <p>Bootstrap Theme Made By <a href="https://www.w3schools.com" data-toggle="tooltip"
-        title="Visit w3schools">www.w3schools.com</a></p>
   </footer>
 
 </body>
