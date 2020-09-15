@@ -109,6 +109,7 @@
     <button type="button" class="btn btn-warning" id="submit">Submit Quiz</button>
     <div id="results"></div>
     <div id="score"></div>
+    <div id="questionsAnswered"></div>
 
     <script>
         (function () {
@@ -162,7 +163,6 @@
 
                 // for each question...
                 myQuestions.forEach((currentQuestion, questionNumber) => {
-
                     // find selected answer
                     const answerContainer = answerContainers[questionNumber];
                     const selector = `input[name=question${questionNumber}]:checked`;
@@ -181,27 +181,85 @@
                         // color the answers red
                         answerContainers[questionNumber].style.color = 'red';
                     }
+                    showQA(currentQuestion, questionNumber);
                 });
 
                 // show number of correct answers out of total
                 resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
 
                 // passing number correct for grading
-                // quizScore(numCorrect);
                 showGrade(numCorrect);
+
             }
+
+            function showQA(currentQuestion, questionNumber) {
+                console.log(currentQuestion);
+                console.log(questionNumber);
+
+                debugger;
+                const answerContainers = quizContainer.querySelectorAll('.answers');
+                const output2 = [];
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    const answerContainer = answerContainers[questionNumber];
+                    const selector = `input[name=question${questionNumber}]:checked`; // answer selected
+                    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                    // questions answered
+                    const questions = answerContainers[questionNumber];
+
+                    //const answers = userAnswer === currentQuestion.correctAnswer;
+                    const answerQ = [];
+
+                    // and for each available answer...
+                    for (letter in currentQuestion.answers) {
+
+                        // answerQ.push(
+                        //     `<label><input type="radio" name="question${questionNumber}" value="${letter}"> ${letter} : ${currentQuestion.correctAnswer[letter]} </label>`
+                        // );
+
+                        answerQ.push(
+                            `<label>
+                            <div class="form-check">
+                            <input class="form-check-input" type="radio" name="question${questionNumber}" value="${letter}"> ${letter} :
+                            ${currentQuestion.answers[letter]}
+                            </div>
+                            </label>`
+                        );
+                    }
+
+                    output2.push(
+                        `<div class="form-group slide" id="question${currentQuestion.correctAnswer[letter]}">
+                        <div class="question"> 
+                        <h2>Question ${questionNumber}</h2>
+                        ${currentQuestion.question} 
+                        </div>
+                        <div class="answers"> ${answerQ.join("")} </div>
+                        </div>`
+                    );
+
+                    // output2.push(
+                    //     `<div class="slide">
+                    //     <div class="question"> ${currentQuestion.correctAnswer[letter]} </div>
+                    //     <div class="answers"> ${answerQ.join("")} </div>
+                    //     </div>`
+                    // );
+
+                    // resultsQA.innerHTML = `${output2}`;
+
+                    document.getElementById('questionsAnswered').innerHTML = (output2).join('');
+                })
+            };
 
             //setting score and inserting
             function showGrade(numCorrect) {
                 var number = Number(numCorrect);
-                debugger;
                 var score = quizScore(number);
                 displayScore.innerHTML = `Your level is ${score}`;
             }
 
             //calculating score
             function quizScore(numCorrect) {
-                debugger;
                 let score = "";
                 if (numCorrect < 6) {
                     return score = "Beginner"
@@ -244,8 +302,8 @@
             // Variables
             const quizContainer = document.getElementById('quiz');
             const resultsContainer = document.getElementById('results');
+            const resultsQA = document.getElementById('questionsAnswered');
             const submitButton = document.getElementById('submit', 'score');
-            //const submitButton = document.getElementById('submit');
             const displayScore = document.getElementById('score');
 
             const myQuestions = [{
@@ -258,86 +316,86 @@
                     },
                     correctAnswer: "b"
                 },
-                {
-                    question: "Inside which HTML element do we put the Javascript (< >)",
-                    answers: {
-                        a: "Script",
-                        b: "javascript",
-                        c: "scripting",
-                        d: "js"
-                    },
-                    correctAnswer: "a"
-                },
-                {
-                    question: "How do you create a function in JavaScript?",
-                    answers: {
-                        a: "function myFunction",
-                        b: "function:myFunction",
-                        c: "function=myFunction",
-                        d: "function-myFunction"
-                    },
-                    correctAnswer: "c"
-                },
-                {
-                    question: "How can you get the total number of arguments passed to a function",
-                    answers: {
-                        a: "args.length property",
-                        b: "arguments.length property",
-                        c: "Both of the above",
-                        d: "None of the above"
-                    },
-                    correctAnswer: "a"
-                },
-                {
-                    question: "Which of the following function of numbers objects return the number's value?",
-                    answers: {
-                        a: "toString",
-                        b: "valueOf",
-                        c: "toLocalString",
-                        d: "toPrecision"
-                    },
-                    correctAnswer: "b"
-                },
-                {
-                    question: "How to write a IF statement in JavaScript?",
-                    answers: {
-                        a: "If i = 5",
-                        b: "if i = 5 then",
-                        c: "if(i==5)",
-                        d: "if i== 5 then"
-                    },
-                    correctAnswer: "a"
-                },
-                {
-                    question: "The external JavaScript file must contain script tag?",
-                    answers: {
-                        a: "yes",
-                        b: "No",
-                        c: "Sometimes",
-                        d: "Most of the times"
-                    },
-                    correctAnswer: "a"
-                },
-                {
-                    question: "Which of the following is not a reserved word in JavaScript?",
-                    answers: {
-                        a: "interface",
-                        b: "throws",
-                        c: "program",
-                        d: "short"
-                    },
-                    correctAnswer: "c"
-                },
-                {
-                    question: "Which function of an Array object calls a function for each element in the array?",
-                    answers: {
-                        a: "forEach()",
-                        b: "every()",
-                        c: "orEvery()",
-                        d: "each()"
-                    },
-                    correctAnswer: "a"
-                },
+                // {
+                //     question: "Inside which HTML element do we put the Javascript (< >)",
+                //     answers: {
+                //         a: "Script",
+                //         b: "javascript",
+                //         c: "scripting",
+                //         d: "js"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "How do you create a function in JavaScript?",
+                //     answers: {
+                //         a: "function myFunction",
+                //         b: "function:myFunction",
+                //         c: "function=myFunction",
+                //         d: "function-myFunction"
+                //     },
+                //     correctAnswer: "c"
+                // },
+                // {
+                //     question: "How can you get the total number of arguments passed to a function",
+                //     answers: {
+                //         a: "args.length property",
+                //         b: "arguments.length property",
+                //         c: "Both of the above",
+                //         d: "None of the above"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "Which of the following function of numbers objects return the number's value?",
+                //     answers: {
+                //         a: "toString",
+                //         b: "valueOf",
+                //         c: "toLocalString",
+                //         d: "toPrecision"
+                //     },
+                //     correctAnswer: "b"
+                // },
+                // {
+                //     question: "How to write a IF statement in JavaScript?",
+                //     answers: {
+                //         a: "If i = 5",
+                //         b: "if i = 5 then",
+                //         c: "if(i==5)",
+                //         d: "if i== 5 then"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "The external JavaScript file must contain script tag?",
+                //     answers: {
+                //         a: "yes",
+                //         b: "No",
+                //         c: "Sometimes",
+                //         d: "Most of the times"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "Which of the following is not a reserved word in JavaScript?",
+                //     answers: {
+                //         a: "interface",
+                //         b: "throws",
+                //         c: "program",
+                //         d: "short"
+                //     },
+                //     correctAnswer: "c"
+                // },
+                // {
+                //     question: "Which function of an Array object calls a function for each element in the array?",
+                //     answers: {
+                //         a: "forEach()",
+                //         b: "every()",
+                //         c: "orEvery()",
+                //         d: "each()"
+                //     },
+                //     correctAnswer: "a"
+                // },
                 {
                     question: "JavaScript is ________ language?",
                     answers: {
@@ -364,7 +422,6 @@
 
             // Event listeners
             submitButton.addEventListener('click', showResults);
-            //submitButton.addEventListener('click', showGrade);
             previousButton.addEventListener("click", showPreviousSlide);
             nextButton.addEventListener("click", showNextSlide);
         })();

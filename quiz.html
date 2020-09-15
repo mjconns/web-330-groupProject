@@ -117,7 +117,9 @@
 
     //
     function showResults() {
+      console.log('got here')
       const answerContainers = quizContainer.querySelectorAll('.answers');
+      debugger;
       let numCorrect = 0;
       var correctAnswer = '';
       var output2 = [];
@@ -130,7 +132,7 @@
       //
       output2.push(`<div class="container-sm margin-top-40">
       <div class="accordion" id="accordionExample">`);
-      
+
       myQuestions.forEach((currentQuestion2, questionNumber2) => {
         // find selected answer
         const answerContainer = answerContainers[questionNumber2];
@@ -170,17 +172,11 @@
             color = "red;"
           }
           questionAnswers.push(
-            `
-          <div class="col-6">
-            <p> ${icon} ${letter} : ${currentQuestion2.answers[letter]}
-            </p>
-          </div>
-        `);
+            `<div class="col-6"><p> ${icon} ${letter} : ${currentQuestion2.answers[letter]} </p> </div>`);
         }
         // add this question and its answers to the output
         output2.push(
-          `   
-            <div class="card margin-top-20">
+          `<div class="card margin-top-20">
               <div class="card-header" id="headin${questionNumber2}">
                 <h2 class="mb-0">
                   <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${questionNumber2}" aria-expanded="true" aria-controls="collapse${questionNumber2}">
@@ -213,6 +209,7 @@
       </div>
     </div>
     `);
+
       resultsContainer.unshift(`${numCorrect} out of ${myQuestions.length} ${output2.join('')}`);
       results.innerHTML = resultsContainer;
       //${numCorrect} out of ${myQuestions.length} + ${output2};
@@ -250,14 +247,11 @@
 
     // variables and constants
 
-
     const quizContainer = document.getElementById('quiz');
     const resultsContainer = document.getElementById('results');
     const submitButton = document.getElementById('submit');
 
-    const myQuestions = [
-
-      {
+    const myQuestions = [{
         question: "Which is not a object oriented programming language?",
         answers: {
           a: "Java",
@@ -265,9 +259,8 @@
           c: "C++",
           d: "C#"
         },
-        correctAnswer: "c"
+        correctAnswer: "b"
       },
-
       {
         question: "Inside which HTML element do we put the Javascript (< >)",
         answers: {
@@ -276,9 +269,8 @@
           c: "scripting",
           d: "js"
         },
-        correctAnswer: "Script"
+        correctAnswer: "a"
       },
-
       {
         question: "How do you create a function in JavaScript?",
         answers: {
@@ -287,9 +279,8 @@
           c: "function=myFunction",
           d: "function-myFunction"
         },
-        correctAnswer: "function=myFunction"
+        correctAnswer: "c"
       },
-
       {
         question: "How can you get the total number of arguments passed to a function",
         answers: {
@@ -298,9 +289,8 @@
           c: "Both of the above",
           d: "None of the above"
         },
-        correctAnswer: "arguments.length property"
+        correctAnswer: "a"
       },
-
       {
         question: "Which of the following function of numbers objects return the number's value?",
         answers: {
@@ -309,9 +299,8 @@
           c: "toLocalString",
           d: "toPrecision"
         },
-        correctAnswer: "valueOf"
+        correctAnswer: "b"
       },
-
       {
         question: "How to write a IF statement in JavaScript?",
         answers: {
@@ -320,9 +309,8 @@
           c: "if(i==5)",
           d: "if i== 5 then"
         },
-        correctAnswer: "If i = 5"
+        correctAnswer: "a"
       },
-
       {
         question: "The external JavaScript file must contain script tag?",
         answers: {
@@ -331,9 +319,8 @@
           c: "Sometimes",
           d: "Most of the times"
         },
-        correctAnswer: "yes"
+        correctAnswer: "a"
       },
-
       {
         question: "Which of the following is not a reserved word in JavaScript?",
         answers: {
@@ -342,9 +329,8 @@
           c: "program",
           d: "short"
         },
-        correctAnswer: "program"
+        correctAnswer: "c"
       },
-
       {
         question: "Which function of an Array object calls a function for each element in the array?",
         answers: {
@@ -353,9 +339,8 @@
           c: "orEvery()",
           d: "each()"
         },
-        correctAnswer: "forEach()"
+        correctAnswer: "a"
       },
-
       {
         question: "JavaScript is ________ language?",
         answers: {
@@ -364,10 +349,9 @@
           c: "a new",
           d: "complied"
         },
-        correctAnswer: "an interpreted"
+        correctAnswer: "b"
       }
     ];
-
 
     buildQuiz();
 
