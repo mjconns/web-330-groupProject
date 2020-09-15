@@ -1,163 +1,181 @@
 <html lang="en">
-
 <head>
 
-    <!---->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>JavaScript Trivia</title>
+    <!----> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <title>JavaScript Trivia</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
-    </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
-    <!--<script src="app.js"></script>-->
+  <script src = "https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
+  <!--<script src="app.js"></script>-->
 
-    <!---->
-    <style>
-        .slide {
-            position: absolute;
-            left: 0px;
-            top: 0px;
-            width: 100%;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
+  <!----> 
+<style>
 
-        .active-slide {
-            opacity: 1;
-            z-index: 2;
-        }
+.slide{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.active-slide{
+  opacity: 1;
+  z-index: 2;
+}
+.quiz-container{
+  position: relative;
+  height: 200px;
+  margin-top: 40px;
+}
+</style>
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
 
-        .quiz-container {
-            position: relative;
-            height: 200px;
-            margin-top: 40px;
-        }
-    </style>
-    <title>The HTML5 Herald</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
-
-    <link rel="stylesheet" href="">
+  <link rel="stylesheet" href="">
 
 </head>
 
 <body>
 
-    <div class="quiz-container">
-        <div id="quiz"> </div>
+  <div class="container-sm margin-top-40">
+    <div class="quiz-container" id="quiz-container">
+      <div id="quiz"> </div>
     </div>
-
     <button id="previous">Previous Question</button>
     <button id="next">Next Question</button>
     <button id="submit" type="submit">Submit Quiz</button>
+  </div>
+  <div class="container-sm margin-top-40">
     <div id="results"></div>
+  </div>
+  
+  
+  <script>
 
-    <script>
-        // build quiz starts here
-        function buildQuiz() {
-            // variable to store the HTML output
-            var output = [];
+  // build quiz starts here
+  function buildQuiz(){
+    // variable to store the HTML output
+    var output = [];
+    
 
-            // for each question...
-            myQuestions.forEach(
-                (currentQuestion, questionNumber) => {
+    // for each question...
+    myQuestions.forEach(
+      (currentQuestion, questionNumber) => {
 
-                    // variable to store the list of possible answers
-                    var answers = [];
+        // variable to store the list of possible answers
+        var answers = [];
 
-                    // and for each available answer...
-                    for (letter in currentQuestion.answers) {
+        // and for each available answer...
+        for(letter in currentQuestion.answers){
 
-                        // ...add an HTML radio button
-                        answers.push(
-                            `<label>
+          // ...add an HTML radio button
+          answers.push(
+            `<label>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="question${questionNumber+1}" value="${letter}" data-bind = "checked: yourAnswer${questionNumber+1}">
                 ${letter} :
                 ${currentQuestion.answers[letter]}
               </div>
-            </label> `);
-                    }
+            </label> `);    
+        }
 
-                    // add this question and its answers to the output
-                    output.push(
-                        `<div class="form-group slide" id="question${questionNumber+1}">
+        // add this question and its answers to the output
+        output.push(
+            `<div class="form-group slide" id="question${questionNumber+1}">
               <div class="question"> 
                 <h2>Question ${questionNumber+1}</h2>
                 ${currentQuestion.question} 
               </div>
-
               <div class="answers"> ${answers.join("")} </div>
            </div>`);
-                }
+       }
 
-            );
+    );
 
-            // finally combine our output list into one string of HTML and put it on the page
-            document.getElementById('quiz').innerHTML = (output).join('');
-        }
-        // build quiz ends here
+    // finally combine our output list into one string of HTML and put it on the page
+    document.getElementById('quiz').innerHTML = (output).join('');
+}
+// build quiz ends here
 
-        //
-        function showResults() {
-            const answerContainers = quizContainer.querySelectorAll('.answers');
-            let numCorrect = 0;
-            var correctAnswer = '';
-            var output2 = [];
-            var resultsContainer = [];
-            var icon = '';
-            output2.push(`<div class="container-sm margin-top-40"><div class="accordion" id="accordionExample">`);
-            myQuestions.forEach((currentQuestion2, questionNumber2) => {
-                // find selected answer
-                const answerContainer = answerContainers[questionNumber2];
-                const selector = `input[name=question${questionNumber2}]:checked`;
-                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+//
+function showResults() {
+  const answerContainers = quizContainer.querySelectorAll('.answers');
+  let numCorrect = 0;
+  var correctAnswer='';
+  var output2 = [];
+  var resultsContainer = [];
+  var icon ='';
 
-                const questionAnswers = [];
-                // if answer is correct
+  document.getElementById("quiz-container").style.display = "none";
+  document.getElementById("previous").style.display = "none";
+  document.getElementById("submit").style.display = "none";
+  //
+  output2.push(`
+    <div class="container-sm margin-top-40">
+      <div class="accordion" id="accordionExample">
+  
+  `);
+  myQuestions.forEach((currentQuestion2, questionNumber2) => {
+    // find selected answer
+    const answerContainer = answerContainers[questionNumber2];
+    const selector = `input[name=question${questionNumber2}]:checked`;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+    
+    const questionAnswers = [];
+    // if answer is correct
 
 
-                for (letter in currentQuestion2.answers) {
+    for(letter in currentQuestion2.answers){
 
-                    // ...add an HTML radio button
-                    if (userAnswer === currentQuestion2.correctAnswer) {
-                        // add to the number of correct answers
-                        numCorrect++;
-                        icon = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="green bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z">
-                </path>
-              </svg>`;
-                    }
-                    // if answer is wrong or blank
-                    else {
-                        // color the answers red
-                        icon = `<svg width="1em" height="1em" viewBox="0 0 16 16" class="red bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z">
-                </path>
-                <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z">
-                </path>
-              </svg>`;
-                    }
-                    questionAnswers.push(
-                        `<div class="col-6"><p> ${icon} ${letter} : ${currentQuestion2.answers[letter]}</p></div>`
-                    );
-                }
+      if (answerContainers[questionNumber2] === currentQuestion2.correctAnswer) {
+        icon=`<svg width="1em" height="1em" viewBox="0 0 16 16" class="green bi bi-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z">
+                  </path>
+                </svg>`;
+      }          
+      else{
+        icon=`<svg width="1em" height="1em" viewBox="0 0 16 16" class="red bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708 0z">
+                  </path>
+                  <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 0 0 0 .708l7 7a.5.5 0 0 0 .708-.708l-7-7a.5.5 0 0 0-.708 0z">
+                  </path>
+                </svg>`;        
+      }          
 
-                // add this question and its answers to the output
-                output2.push(`<div class="card margin-top-20">
+      // ...add an HTML radio button
+      if (userAnswer === currentQuestion2.correctAnswer) {
+        // add to the number of correct answers
+        numCorrect++;
+        color="green";
+
+      }
+      // if answer is wrong or blank
+      else {
+        // color the answers red
+           color="red;" 
+      }
+      questionAnswers.push(
+        `
+          <div class="col-6">
+            <p> ${icon} ${letter} : ${currentQuestion2.answers[letter]}
+            </p>
+          </div>
+        `);   
+    }
+      // add this question and its answers to the output
+      output2.push(
+        `   
+            <div class="card margin-top-20">
               <div class="card-header" id="headin${questionNumber2}">
                 <h2 class="mb-0">
                   <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${questionNumber2}" aria-expanded="true" aria-controls="collapse${questionNumber2}">
@@ -165,213 +183,221 @@
                   </button>
                 </h2>
               </div>
-            </div>
-
-            <div id="collaps${questionNumber2}" class="collapse show" aria-labelledby="heading${questionNumber2}" data-parent="#accordionExample" style="">
-              <div class="card-body row">
-                <div class="col-md-12 jumbotron">
-                  <h4>${currentQuestion2.question}</h4>
+              <div id="collaps${questionNumber2}" class="collapse show" aria-labelledby="heading${questionNumber2}" data-parent="#accordionExample" style="">
+                <div class="card-body row">
+                  <div class="col-md-12 jumbotron">
+                    <h4>${currentQuestion2.question}</h4>
+                  </div>
+                  <div class="col-md-12">
+                    <h4>Answers:</h4>
+                  </div>
+                  <div class="row col-md-12">
+                  ${questionAnswers.join("")}
+                  </div>
+                  <div class="row col-md-12">
+                    <div data-bind = "text:checkAnswer${questionNumber2+1}"> Your Answer</div>
+                  </div>  
                 </div>
-                <div class="col-md-12">
-                  <h4>Answers:</h4>
-                </div>
-                <div class="row col-md-12">
-                ${questionAnswers.join("")}
-                </div>
-                <div class="row col-md-12">
-                  <div data-bind = "text:checkAnswer${questionNumber2+1}"> Your Answer</div>
-                </div>  
-              </div>
+              </div>  
             </div>  
+          `);
 
-          </div>    
-        </div>`);
+  });
+  resultsContainer.push(
+    `     </div>    
+      </div>
+    </div>
+    `);
+    resultsContainer.unshift(`${numCorrect} out of ${myQuestions.length} ${output2.join('')}`);
+    results.innerHTML =  resultsContainer;
+  //${numCorrect} out of ${myQuestions.length} + ${output2};
+}
+//
 
-            });
-            resultsContainer.push(`${numCorrect} out of ${myQuestions.length} + ${output2};</div>`);
-            results.innerHTML = resultsContainer;
-        }
+// show slide starts here
+  function showSlide(n) {
+    slides[currentSlide].classList.remove('active-slide');
+    slides[n].classList.add('active-slide');
+    currentSlide = n;
+    if (currentSlide === 0) {
+      previousButton.style.display = 'none';
+    } else
+    {
+      previousButton.style.display = 'inline-block';
+    }
+    if (currentSlide === slides.length - 1) {
+      nextButton.style.display = 'none';
+      submitButton.style.display = 'inline-block';
+    } else
+    {
+      nextButton.style.display = 'inline-block';
+      submitButton.style.display = 'none';
+    }
+  }
 
-        // show slide starts here
-        function showSlide(n) {
-            slides[currentSlide].classList.remove('active-slide');
-            slides[n].classList.add('active-slide');
-            currentSlide = n;
-            if (currentSlide === 0) {
-                previousButton.style.display = 'none';
-            } else {
-                previousButton.style.display = 'inline-block';
-            }
-            if (currentSlide === slides.length - 1) {
-                nextButton.style.display = 'none';
-                submitButton.style.display = 'inline-block';
-            } else {
-                nextButton.style.display = 'inline-block';
-                submitButton.style.display = 'none';
-            }
-        }
+  function showNextSlide() {
+    showSlide(currentSlide + 1);
+  }
 
-        function showNextSlide() {
-            showSlide(currentSlide + 1);
-        }
+  function showPreviousSlide() {
+    showSlide(currentSlide - 1);
+  }
 
-        function showPreviousSlide() {
-            showSlide(currentSlide - 1);
-        }
-        //show slide ends here
+//show slide ends here
 
-        // variables and constants
-        const quizContainer = document.getElementById('quiz');
-        const resultsContainer = document.getElementById('results');
-        const submitButton = document.getElementById('submit');
+// variables and constants
 
-        const myQuestions = [
+   
+const quizContainer = document.getElementById('quiz');
+const resultsContainer = document.getElementById('results');
+const submitButton = document.getElementById('submit');
 
-            {
-                question: "Which is not a object oriented programming language?",
-                answers: {
-                    a: "Java",
-                    b: "C",
-                    c: "C++",
-                    d: "C#"
-                },
-                correctAnswer: "c"
-            },
+const myQuestions = [
+    
+    {
+        question: "Which is not a object oriented programming language?",
+        answers: {
+            a: "Java",
+            b: "C",
+            c: "C++",
+            d: "C#"
+        },
+        correctAnswer: "c"
+    },
 
-            {
-                question: "Inside which HTML element do we put the Javascript (< >)",
-                answers: {
-                    a: "Script",
-                    b: "javascript",
-                    c: "scripting",
-                    d: "js"
-                },
-                correctAnswer: "Script"
-            },
+    {
+        question: "Inside which HTML element do we put the Javascript (< >)",
+        answers: {
+            a: "Script",
+            b: "javascript",
+            c: "scripting",
+            d: "js"
+        },
+        correctAnswer: "Script"
+    },
 
-            {
-                question: "How do you create a function in JavaScript?",
-                answers: {
-                    a: "function myFunction",
-                    b: "function:myFunction",
-                    c: "function=myFunction",
-                    d: "function-myFunction"
-                },
-                correctAnswer: "function=myFunction"
-            },
+    {
+        question: "How do you create a function in JavaScript?",
+        answers: {
+            a: "function myFunction",
+            b: "function:myFunction",
+            c: "function=myFunction",
+            d: "function-myFunction"
+        },
+        correctAnswer: "function=myFunction"
+    },
 
-            {
-                question: "How can you get the total number of arguments passed to a function",
-                answers: {
-                    a: "args.length property",
-                    b: "arguments.length property",
-                    c: "Both of the above",
-                    d: "None of the above"
-                },
-                correctAnswer: "arguments.length property"
-            },
+    {
+        question: "How can you get the total number of arguments passed to a function",
+        answers: {
+            a: "args.length property",
+            b: "arguments.length property",
+            c: "Both of the above",
+            d: "None of the above"
+        },
+        correctAnswer: "arguments.length property"
+    },
 
-            {
-                question: "Which of the following function of numbers objects return the number's value?",
-                answers: {
-                    a: "toString",
-                    b: "valueOf",
-                    c: "toLocalString",
-                    d: "toPrecision"
-                },
-                correctAnswer: "valueOf"
-            },
+    {
+        question: "Which of the following function of numbers objects return the number's value?",
+        answers: {
+            a: "toString",
+            b: "valueOf",
+            c: "toLocalString",
+            d: "toPrecision"
+        },
+        correctAnswer: "valueOf"
+    },
 
-            {
-                question: "How to write a IF statement in JavaScript?",
-                answers: {
-                    a: "If i = 5",
-                    b: "if i = 5 then",
-                    c: "if(i==5)",
-                    d: "if i== 5 then"
-                },
-                correctAnswer: "If i = 5"
-            },
+    {
+        question: "How to write a IF statement in JavaScript?",
+        answers: {
+            a: "If i = 5",
+            b: "if i = 5 then",
+            c: "if(i==5)",
+            d: "if i== 5 then"
+        },
+        correctAnswer: "If i = 5"
+    },
 
-            {
-                question: "The external JavaScript file must contain script tag?",
-                answers: {
-                    a: "yes",
-                    b: "No",
-                    c: "Sometimes",
-                    d: "Most of the times"
-                },
-                correctAnswer: "yes"
-            },
+    {
+        question: "The external JavaScript file must contain script tag?",
+        answers: {
+            a: "yes",
+            b: "No",
+            c: "Sometimes",
+            d: "Most of the times"
+        },
+        correctAnswer: "yes"
+    },
 
-            {
-                question: "Which of the following is not a reserved word in JavaScript?",
-                answers: {
-                    a: "interface",
-                    b: "throws",
-                    c: "program",
-                    d: "short"
-                },
-                correctAnswer: "program"
-            },
+    {
+        question: "Which of the following is not a reserved word in JavaScript?",
+        answers: {
+            a: "interface",
+            b: "throws",
+            c: "program",
+            d: "short"
+        },
+        correctAnswer: "program"
+    },
 
-            {
-                question: "Which function of an Array object calls a function for each element in the array?",
-                answers: {
-                    a: "forEach()",
-                    b: "every()",
-                    c: "orEvery()",
-                    d: "each()"
-                },
-                correctAnswer: "forEach()"
-            },
+    {
+        question: "Which function of an Array object calls a function for each element in the array?",
+        answers: {
+            a: "forEach()",
+            b: "every()",
+            c: "orEvery()",
+            d: "each()"
+        },
+        correctAnswer: "forEach()"
+    },
 
-            {
-                question: "JavaScript is ________ language?",
-                answers: {
-                    a: "developing",
-                    b: "an interpreted",
-                    c: "a new",
-                    d: "complied"
-                },
-                correctAnswer: "an interpreted"
-            }
-        ];
+    {
+        question: "JavaScript is ________ language?",
+        answers: {
+            a: "developing",
+            b: "an interpreted",
+            c: "a new",
+            d: "complied"
+        },
+        correctAnswer: "an interpreted"
+    }
+];
 
 
-        buildQuiz();
+buildQuiz();
 
-        const previousButton = document.getElementById("previous");
-        const nextButton = document.getElementById("next");
-        const slides = document.querySelectorAll(".slide");
-        let currentSlide = 0;
+const previousButton = document.getElementById("previous");
+const nextButton = document.getElementById("next");
+const slides = document.querySelectorAll(".slide");
+let currentSlide = 0;
 
-        // Show the first slide
-        showSlide(currentSlide);
+// Show the first slide
+showSlide(currentSlide);
 
-        // Event listeners
-        submitButton.addEventListener('click', showResults);
-        previousButton.addEventListener("click", showPreviousSlide);
-        nextButton.addEventListener("click", showNextSlide);
-        ///
-        function ViewModel() {
-            yourAnswer1 = ko.observable("No selection made");
-            yourAnswer2 = ko.observable("No selection made");
-            yourAnswer3 = ko.observable("No selection made");
-            yourAnswer4 = ko.observable("No selection made");
-            yourAnswer5 = ko.observable("No selection made");
-            yourAnswer6 = ko.observable("No selection made");
-            yourAnswer7 = ko.observable("No selection made");
-            yourAnswer8 = ko.observable("No selection made");
-            yourAnswer9 = ko.observable("No selection made");
-            yourAnswer10 = ko.observable("No selection made");
+// Event listeners
+submitButton.addEventListener('click', showResults);
+previousButton.addEventListener("click", showPreviousSlide);
+nextButton.addEventListener("click", showNextSlide);
+///
+function ViewModel(){
+    yourAnswer1 =  ko.observable("No selection made");
+    yourAnswer2 =  ko.observable("No selection made");
+    yourAnswer3 =  ko.observable("No selection made");
+    yourAnswer4 =  ko.observable("No selection made");
+    yourAnswer5 =  ko.observable("No selection made");
+    yourAnswer6 =  ko.observable("No selection made");
+    yourAnswer7 =  ko.observable("No selection made");
+    yourAnswer8 =  ko.observable("No selection made");
+    yourAnswer9 =  ko.observable("No selection made");
+    yourAnswer10 =  ko.observable("No selection made");
 
-        }
-        var vm = new ViewModel();
-        ko.applyBindings(vm);
-        //
-    </script>
+  }
+  var vm = new ViewModel();
+    ko.applyBindings(vm);
+//
+</script>
 
 </body>
-
 </html>
