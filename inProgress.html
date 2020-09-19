@@ -109,9 +109,37 @@
     <button type="button" class="btn btn-warning" id="submit">Submit Quiz</button>
     <div id="results"></div>
     <div id="score"></div>
-    <div id="questionsAnswered"></div>
+
+    <div id="questionsAnswered" data-bind="if: displayMessage">
+        <table class="table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>User Answer</th>
+                    <th>Correct Answer</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: resultsDisplay">
+                <tr>
+                    <td data-bind="text: question"></td>
+                    <td data-bind="text: userAnswer"></td>
+                    <td data-bind="text: correctAnswer"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
 
     <script>
+        // https://knockoutjs.com/documentation/if-binding.html
+        // getts error: "Uncaught Error: You cannot apply bindings multiple times to the same element."
+        // I also tried the example with
+        // <div data-bind="if: !someProperty()">...</div>
+        // and used !reviewQA() function
+        ko.applyBindings({
+            displayMessage: ko.observable(false)
+        });
+
         (function () {
 
             // Functions
@@ -122,7 +150,6 @@
                 // for each question...
                 myQuestions.forEach(
                     (currentQuestion, questionNumber) => {
-
                         // variable to store the list of possible answers
                         const answers = [];
 
@@ -132,19 +159,19 @@
                             // ...add an HTML radio button
                             answers.push(
                                 `<label>
-              <input type="radio" name="question${questionNumber}" value="${letter}">
-              ${letter} :
-              ${currentQuestion.answers[letter]}
-            </label>`
+                                <input type="radio" name="question${questionNumber}" value="${letter}">
+                                ${letter} :
+                                ${currentQuestion.answers[letter]}
+                                </label>`
                             );
                         }
 
                         // add this question and its answers to the output
                         output.push(
                             `<div class="slide">
-            <div class="question"> ${currentQuestion.question} </div>
-            <div class="answers"> ${answers.join("")} </div>
-          </div>`
+                            <div class="question"> ${currentQuestion.question} </div>
+                            <div class="answers"> ${answers.join("")} </div>
+                            </div>`
                         );
                     }
                 );
@@ -153,7 +180,7 @@
                 quizContainer.innerHTML = output.join('');
             }
 
-            function showResults() {
+            function generateResults() {
 
                 // gather answer containers from our quiz
                 const answerContainers = quizContainer.querySelectorAll('.answers');
@@ -181,78 +208,50 @@
                         // color the answers red
                         answerContainers[questionNumber].style.color = 'red';
                     }
-                    showQA(currentQuestion, questionNumber);
+                    reviewQA(currentQuestion, questionNumber);
                 });
 
                 // show number of correct answers out of total
                 resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
 
                 // passing number correct for grading
-                showGrade(numCorrect);
-
+                getGrade(numCorrect);
             }
 
-            function showQA(currentQuestion, questionNumber) {
-                console.log(currentQuestion);
-                console.log(questionNumber);
+            function reviewQA(currentQuestion, questionNumber) {
 
-                debugger;
+                // getting answers
                 const answerContainers = quizContainer.querySelectorAll('.answers');
-                const output2 = [];
 
                 myQuestions.forEach((currentQuestion, questionNumber) => {
-                    const answerContainer = answerContainers[questionNumber];
-                    const selector = `input[name=question${questionNumber}]:checked`; // answer selected
-                    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+                    const answerContainer = answerContainers[questionNumber]; //question number in array
+                    const selector =
+                        `input[name=question${questionNumber}]:checked`; //finding checked answer
+                    const userAnswer = (answerContainer.querySelector(selector) || {})
+                        .value; // answer selected
 
-                    // questions answered
-                    const questions = answerContainers[questionNumber];
+                    // pass into ViewModel to build array for table
+                    //// this seems to loop through too many times and generates undefined values
+                    ResultsViewModel(currentQuestion.question, currentQuestion.correctAnswer, userAnswer); 
+                });
 
-                    //const answers = userAnswer === currentQuestion.correctAnswer;
-                    const answerQ = [];
+                function ResultsViewModel(question, correctAnswer, userAnswer) {
+                    console.log(question);
+                    console.log(correctAnswer);
+                    console.log(userAnswer);
 
-                    // and for each available answer...
-                    for (letter in currentQuestion.answers) {
+                    this.resultsDisplay = ko.observableArray([{
+                        question: question,
+                        correctAnswer: correctAnswer,
+                        userAnswer: userAnswer
+                    }]);
+                }
 
-                        // answerQ.push(
-                        //     `<label><input type="radio" name="question${questionNumber}" value="${letter}"> ${letter} : ${currentQuestion.correctAnswer[letter]} </label>`
-                        // );
-
-                        answerQ.push(
-                            `<label>
-                            <div class="form-check">
-                            <input class="form-check-input" type="radio" name="question${questionNumber}" value="${letter}"> ${letter} :
-                            ${currentQuestion.answers[letter]}
-                            </div>
-                            </label>`
-                        );
-                    }
-
-                    output2.push(
-                        `<div class="form-group slide" id="question${currentQuestion.correctAnswer[letter]}">
-                        <div class="question"> 
-                        <h2>Question ${questionNumber}</h2>
-                        ${currentQuestion.question} 
-                        </div>
-                        <div class="answers"> ${answerQ.join("")} </div>
-                        </div>`
-                    );
-
-                    // output2.push(
-                    //     `<div class="slide">
-                    //     <div class="question"> ${currentQuestion.correctAnswer[letter]} </div>
-                    //     <div class="answers"> ${answerQ.join("")} </div>
-                    //     </div>`
-                    // );
-
-                    // resultsQA.innerHTML = `${output2}`;
-
-                    document.getElementById('questionsAnswered').innerHTML = (output2).join('');
-                })
+                ko.applyBindings(new ResultsViewModel());
             };
 
             //setting score and inserting
-            function showGrade(numCorrect) {
+            function getGrade(numCorrect) {
                 var number = Number(numCorrect);
                 var score = quizScore(number);
                 displayScore.innerHTML = `Your level is ${score}`;
@@ -408,7 +407,7 @@
                 }
             ];
 
-            // Kick things off
+            // Start
             buildQuiz();
 
             // Pagination
@@ -421,7 +420,7 @@
             showSlide(currentSlide);
 
             // Event listeners
-            submitButton.addEventListener('click', showResults);
+            submitButton.addEventListener('click', generateResults);
             previousButton.addEventListener("click", showPreviousSlide);
             nextButton.addEventListener("click", showNextSlide);
         })();

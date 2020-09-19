@@ -1,0 +1,446 @@
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <title>JavaScript Trivia</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
+
+
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
+
+        body {
+            font-size: 20px;
+            font-family: 'Work Sans', sans-serif;
+            color: #333;
+            font-weight: 300;
+            text-align: center;
+            background-color: #f8f6f0;
+        }
+
+        h1 {
+            font-weight: 300;
+            margin: 0px;
+            padding: 10px;
+            font-size: 20px;
+            background-color: #444;
+            color: #fff;
+        }
+
+        .question {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .answers {
+            text-align: left;
+            display: inline-block;
+        }
+
+        .answers label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 22px;
+            background-color: #279;
+            color: #fff;
+            border: 0px;
+            border-radius: 3px;
+            padding: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #38a;
+        }
+
+        .slide {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .active-slide {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .quiz-container {
+            position: relative;
+            height: 200px;
+            margin-top: 40px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="quiz-container">
+        <div id="quiz"></div>
+    </div>
+    <button type="button" class="btn btn-secondary" id="previous">Previous Question</button>
+    <button type="button" class="btn btn-success" id="next">Next Question</button>
+    <button type="button" class="btn btn-warning" id="submit">Submit Quiz</button>
+    <div id="results"></div>
+    <div id="score"></div>
+    <div id="questionsAnswered"></div>
+
+    <script>
+        (function () {
+
+            // Functions
+            function buildQuiz() {
+                // variable to store the HTML output
+                const output = [];
+
+                // for each question...
+                myQuestions.forEach(
+                    (currentQuestion, questionNumber) => {
+                        debugger;
+                        // variable to store the list of possible answers
+                        const answers = [];
+
+                        // and for each available answer...
+                        for (letter in currentQuestion.answers) {
+
+                            // ...add an HTML radio button
+                            answers.push(
+                                `<label>
+                                <input type="radio" name="question${questionNumber}" value="${letter}">
+                                ${letter} :
+                                ${currentQuestion.answers[letter]}
+                                </label>`
+                            );
+                        }
+
+                        // add this question and its answers to the output
+                        output.push(
+                            `<div class="slide">
+                            <div class="question"> ${currentQuestion.question} </div>
+                            <div class="answers"> ${answers.join("")} </div>
+                            </div>`
+                        );
+                    }
+                );
+
+                // finally combine our output list into one string of HTML and put it on the page
+                quizContainer.innerHTML = output.join('');
+            }
+
+            function showResults() {
+
+                // gather answer containers from our quiz
+                const answerContainers = quizContainer.querySelectorAll('.answers');
+
+                // keep track of user's answers
+                let numCorrect = 0;
+
+                // for each question...
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    // find selected answer
+                    const answerContainer = answerContainers[questionNumber];
+                    const selector = `input[name=question${questionNumber}]:checked`;
+                    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                    // if answer is correct
+                    if (userAnswer === currentQuestion.correctAnswer) {
+                        // add to the number of correct answers
+                        numCorrect++;
+
+                        // color the answers green
+                        answerContainers[questionNumber].style.color = 'lightgreen';
+                    }
+                    // if answer is wrong or blank
+                    else {
+                        // color the answers red
+                        answerContainers[questionNumber].style.color = 'red';
+                    }
+                    showQA(currentQuestion, questionNumber);
+                });
+
+                // show number of correct answers out of total
+                resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+
+                // passing number correct for grading
+                showGrade(numCorrect);
+
+            }
+
+            function showQA(currentQuestion, questionNumber) {
+                console.log(currentQuestion);
+                console.log(questionNumber);
+
+                debugger;
+                const answerContainers = quizContainer.querySelectorAll('.answers');
+                const output2 = [];
+
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    const answerContainer = answerContainers[questionNumber];
+                    const selector =
+                        `input[name=question${questionNumber}]:checked`; //finding checked answer
+                    const userAnswer = (answerContainer.querySelector(selector) || {})
+                        .value; // answer selected
+
+                    // questions
+                    const questions = answerContainers[questionNumber];
+
+                    // const answers = userAnswer === currentQuestion.correctAnswer;
+                    const answerQ = [];
+
+                    // and for each available answer...
+                    for (letter in currentQuestion.answers) {
+
+                        console.log(currentQuestion.answers, 'answers'); // possible answers
+                        console.log(answerQ, 'answerQ'); // array to insert html
+                        console.log(userAnswer, 'userAnswer'); // contains answer
+
+
+                        // answerQ.push(
+                        //     `<label><input type="radio" name="question${questionNumber}" value="${letter}"> ${letter} : ${currentQuestion.correctAnswer[letter]} </label>`
+                        // );
+
+                        // answerQ.push(
+                        //     `<label>
+                        //     <div class="form-check">
+                        //     <input class="form-check-input" type="radio" name="question${questionNumber}" value="${letter}"> ${letter} :
+                        //     ${currentQuestion.answers[letter]}
+                        //     </div>
+                        //     </label>`
+                        // );
+
+                        answerQ.push(
+                            `<p>MADE IT HERE</p> <p></p>
+                            <div class="form-check"><input class="form-check-input" type="radio" name="question${questionNumber}" value="${letter}"> ${letter} :${currentQuestion.answers[letter]}
+                        </div>`
+                        );
+                    }
+
+                    output2.push(
+                        `<div class="form-group slide" id="question${currentQuestion.correctAnswer[letter]}">
+                        <div class="question"> 
+                        <h2>Question ${questionNumber}</h2>
+                        ${currentQuestion.question} 
+                        </div>
+                        <div class="answers"> ${answerQ.join("")} </div>
+                        </div>`
+                    );
+
+                    // output2.push(
+                    //     `<div class="slide">
+                    //     <div class="question"> ${currentQuestion.correctAnswer[letter]} </div>
+                    //     <div class="answers"> ${answerQ.join("")} </div>
+                    //     </div>`
+                    // );
+
+                    // resultsQA.innerHTML = `${output2}`;
+
+                    document.getElementById('questionsAnswered').innerHTML = (output2).join('');
+                })
+            };
+
+            //setting score and inserting
+            function showGrade(numCorrect) {
+                var number = Number(numCorrect);
+                var score = quizScore(number);
+                displayScore.innerHTML = `Your level is ${score}`;
+            }
+
+            //calculating score
+            function quizScore(numCorrect) {
+                let score = "";
+                if (numCorrect < 6) {
+                    return score = "Beginner"
+
+                } else if (numCorrect > 5 && numCorrect < 9) {
+                    return score = "Novice"
+
+                } else if (numCorrect > 8) {
+                    console.log(numCorrect)
+                    return score = "Expert"
+                }
+            }
+
+            function showSlide(n) {
+                slides[currentSlide].classList.remove('active-slide');
+                slides[n].classList.add('active-slide');
+                currentSlide = n;
+                if (currentSlide === 0) {
+                    previousButton.style.display = 'none';
+                } else {
+                    previousButton.style.display = 'inline-block';
+                }
+                if (currentSlide === slides.length - 1) {
+                    nextButton.style.display = 'none';
+                    submitButton.style.display = 'inline-block';
+                } else {
+                    nextButton.style.display = 'inline-block';
+                    submitButton.style.display = 'none';
+                }
+            }
+
+            function showNextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            function showPreviousSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            // Variables
+            const quizContainer = document.getElementById('quiz');
+            const resultsContainer = document.getElementById('results');
+            const resultsQA = document.getElementById('questionsAnswered');
+            const submitButton = document.getElementById('submit', 'score');
+            const displayScore = document.getElementById('score');
+
+            const myQuestions = [{
+                    question: "Which is not a object oriented programming language?",
+                    answers: {
+                        a: "Java",
+                        b: "C",
+                        c: "C++",
+                        d: "C#"
+                    },
+                    correctAnswer: "b"
+                },
+                // {
+                //     question: "Inside which HTML element do we put the Javascript (< >)",
+                //     answers: {
+                //         a: "Script",
+                //         b: "javascript",
+                //         c: "scripting",
+                //         d: "js"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "How do you create a function in JavaScript?",
+                //     answers: {
+                //         a: "function myFunction",
+                //         b: "function:myFunction",
+                //         c: "function=myFunction",
+                //         d: "function-myFunction"
+                //     },
+                //     correctAnswer: "c"
+                // },
+                // {
+                //     question: "How can you get the total number of arguments passed to a function",
+                //     answers: {
+                //         a: "args.length property",
+                //         b: "arguments.length property",
+                //         c: "Both of the above",
+                //         d: "None of the above"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "Which of the following function of numbers objects return the number's value?",
+                //     answers: {
+                //         a: "toString",
+                //         b: "valueOf",
+                //         c: "toLocalString",
+                //         d: "toPrecision"
+                //     },
+                //     correctAnswer: "b"
+                // },
+                // {
+                //     question: "How to write a IF statement in JavaScript?",
+                //     answers: {
+                //         a: "If i = 5",
+                //         b: "if i = 5 then",
+                //         c: "if(i==5)",
+                //         d: "if i== 5 then"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "The external JavaScript file must contain script tag?",
+                //     answers: {
+                //         a: "yes",
+                //         b: "No",
+                //         c: "Sometimes",
+                //         d: "Most of the times"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                // {
+                //     question: "Which of the following is not a reserved word in JavaScript?",
+                //     answers: {
+                //         a: "interface",
+                //         b: "throws",
+                //         c: "program",
+                //         d: "short"
+                //     },
+                //     correctAnswer: "c"
+                // },
+                // {
+                //     question: "Which function of an Array object calls a function for each element in the array?",
+                //     answers: {
+                //         a: "forEach()",
+                //         b: "every()",
+                //         c: "orEvery()",
+                //         d: "each()"
+                //     },
+                //     correctAnswer: "a"
+                // },
+                {
+                    question: "JavaScript is ________ language?",
+                    answers: {
+                        a: "developing",
+                        b: "an interpreted",
+                        c: "a new",
+                        d: "complied"
+                    },
+                    correctAnswer: "b"
+                }
+            ];
+
+            // Kick things off
+            buildQuiz();
+
+            // Pagination
+            const previousButton = document.getElementById("previous");
+            const nextButton = document.getElementById("next");
+            const slides = document.querySelectorAll(".slide");
+            let currentSlide = 0;
+
+            // Show the first slide
+            showSlide(currentSlide);
+
+            // Event listeners
+            submitButton.addEventListener('click', showResults);
+            previousButton.addEventListener("click", showPreviousSlide);
+            nextButton.addEventListener("click", showNextSlide);
+        })();
+    </script>
+
+
+</body>
+
+</html>
