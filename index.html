@@ -2,192 +2,234 @@
 <html lang="en">
 
 <head>
-  <!-- Theme Made By www.w3schools.com - No Copyright -->
-  <title>JS quiz</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <!-- Local stylesheet -->
-  <link href="stylesheet.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JS quiz</title>
 
-  <!-- adding wendy's code -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-  </script>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- knockout library -->
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.4.2.js"></script>
+
+    <!-- local imports -->
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src='quiz-data.js'></script>
+    <script src='javascriptMain.js'></script>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
+    </style>
 </head>
 
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
-  <script>
-    $(document).ready(function () {
-      // Add smooth scrolling to all links in navbar + footer link
-      $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+    <!-- scripts for index.html file -->
+    <script>
+        window.onload = function () {
+            $("#previous").hide();
+            $("#submit").hide();
+            ko.applyBindings(model);
+        }
 
-        // Make sure this.hash has a value before overriding default behavior
-        if (this.hash !== "") {
+        window.onload = function () {
+            $("#previous").hide();
+            $("#submit").hide();
+            ko.applyBindings(model);
+        }
 
-          // Prevent default anchor click behavior
-          event.preventDefault();
+        // Add smooth scrolling to all links in navbar + footer link
+        $(document).ready(function () {
+            $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
 
-          // Store hash
-          var hash = this.hash;
+                // Make sure this.hash has a value before overriding default behavior
+                if (this.hash !== "") {
 
-          // Using jQuery's animate() method to add smooth page scroll
-          // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-          $('html, body').animate({
-            scrollTop: $(hash).offset().top
-          }, 900, function () {
+                    // Prevent default anchor click behavior
+                    event.preventDefault();
 
-            // Add hash (#) to URL when done scrolling (default click behavior)
-            window.location.hash = hash;
-          });
-        } // End if
-      });
-    })
+                    // Store hash
+                    var hash = this.hash;
 
-    // show/hide elements -- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
-    function startQuiz() {
-      var x = document.getElementById("quiz");
-      console.log(x);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    }
+                    // Using jQuery's animate() method to add smooth page scroll
+                    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 900, function () {
 
-    function seeResults() {
-      var x = document.getElementById("results");
-      console.log(x);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    }
-  </script>
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        })
 
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#myPage"><span class="glyphicon glyphicon-globe"></span></a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#devs">DEVS</a></li>
-          <li><a href="#begin">QUIZ</a></li>
-          <li><a href="#results">RESULTS</a></li>
+        // show/hide elements -- https://www.w3schools.com/howto/howto_js_toggle_hide_show.asp
+        function startQuiz() {
+            var x = document.getElementById("quiz");
+            console.log(x);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        function seeResults() {
+            var x = document.getElementById("results");
+            console.log(x);
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="#home">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#devs">DEVS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#beginQuiz">QUIZ</a>
+            </li>
         </ul>
-      </div>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- Container (The Devs) -->
-  <div id="devs" class="container text-center">
-    <h3>GROUP D's JAVASCRIPT QUIZ EXTRORDINAIRE</h3>
-    <p><em>We love JavaScript!</em></p>
-    <p>Through our learning at BU and as a collective group teaching eachother, we've put our combined skils together
-      for this project. Read more about each developer below or <a href="#quiz">begin the quiz now!</a></p>
-    <br>
-    <div class="row">
-      <div class="col-sm-4">
-        <p class="text-center"><strong>Captain</strong></p><br>
-        <a href="#demo" data-toggle="collapse">
-          <img src="./images/micah.png" class="img-circle person" alt="Micah" width="255" height="255">
-        </a>
-        <div id="demo" class="collapse">
-          <p><strong>Name: </strong>Micah</p>
-          <p><strong>Favorite Food: </strong>Sheperd's Pie</p>
-          <p><strong>Bio: </strong>I’m a full-time employee and student. I enjoy being active; sports, hiking, camping,
-            exercise, etc. I’m
-            also passionate about photography and travel. I’ve worked at TD Ameritrade for over 11 years now doing a
-            variety of things, with my most recent role as a developer-in-training. I’m learning on the job and through
-            BU about building web applications. So far I’ve experience with HTML, CSS, Angular/Typescript, SQL, and C#.
-            Still a relative novice, so I’m excited to learn and be able to do more!</p>
+    <!-- begin quiz banner -->
+    <div class="container" id="home">
+        <div class="jumbotron">
+            <h1 class="display-4">JAVASCRIPT QUIZ</h1>
+            <p class="lead">See how you stack up against your peers and test your JavaScript knowledge today!</p>
+            <hr>
+            <p>Through our learning at BU and as a collective group teaching eachother, we've put our combined skils
+                together for this project. Read more about each developer below or begin the quiz now!</p>
+
         </div>
-      </div>
-      <div class="col-sm-4">
-        <p class="text-center"><strong>Lieutenant</strong></p><br>
-        <a href="#demo2" data-toggle="collapse">
-          <img src="./images/wendy.jpg" class="img-circle person" alt="Wendy" width="255" height="255">
-        </a>
-        <div id="demo2" class="collapse">
-          <p><strong>Name: </strong>Wendy</p>
-          <p><strong>Favorite Food: </strong></p>
-          <p><strong>Bio: </strong>Wendy first learned Web Design and Programming through an intensive 10 month Web
-            Programming Certificate program at Champlain College, St Lambert, Canada. More recently she received an
-            associate Degree in Internet Services from "Daytona State College” and is currently pursuing a bachelors in
-            Web Development online at Bellevue University.
-            When Wendy is not in front of her computer designing websites, you can find her in front of her computer
-            learning new web technologies. She recently started playing with Node and hopes to become good friends with
-            Express.
-          </p>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <p class="text-center"><strong>Lieutenant</strong></p><br>
-        <a href="#demo3" data-toggle="collapse">
-          <img src="./images/erica.jpg" class="img-circle person" alt="Erica" width="255" height="255">
-        </a>
-        <div id="demo3" class="collapse">
-          <p><strong>Name: </strong>Erica</p>
-          <p<strong>Favorite food: </strong></p>
-            <p><strong>Bio: </strong>Erica is an ABA therapist and DSP who has been working in the field of human
-              services
-              for 7 years. She started her career out as a dietary aid at a nursing home while pursuing her associates
-              degree in General Sonography at a community college in Boston Ma. Later she transferred to a local college
-              where she then took up an interest in human behavior and psychology. As time went on, Erica felt like she
-              had done all she could with human services and wanted a change or more so what could she add on ! She has
-              wishes and dreams to develop apps for clients she serves and others who have mental disabilities. Erica
-              wishes to develop educational gaming apps and is now taking steps in the right direction by doing what she
-              loves. Erica is currently working with/ learning HTML,CSS, JavaScript while pursuing her Bachelor's degree
-              in web design/ web development online at Bellevue University.</p>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="container" id="begin">
-    <div class="jumbotron">
-      <h1 class="display-4">TAKE THE QUIZ, WHIZ</h1>
-      <p class="lead">See how you stack up against your peers and test your JavaScript knowledge today!</p>
-      <hr>
-      <div class="beginQuizBtn">
-        <a href="#quiz"><button type="button" class="btn btn-warning" onclick="startQuiz()">Begin Quiz</button></a>
-      </div>
+    <!-- dev biographies -->
+    <div id="devs" class="container text-center">
+        <br>
+        <div class="row">
+            <div class="col-sm-6">
+                <p class="text-center"><strong>Red Dev</strong></p><br>
+                <a href="#demo" data-toggle="collapse">
+                    <img src="./images/micah.png" class="img-circle person" alt="Micah" width="255" height="255">
+                </a>
+                <div id="demo" class="collapse">
+                    <p><strong>Name: </strong>Micah</p>
+                    <p><strong>Favorite Food: </strong>Sheperd's Pie</p>
+                    <p><strong>Bio: </strong>I’m a full-time employee and student. I enjoy being active; sports, hiking,
+                        camping,
+                        exercise, etc. I’m
+                        also passionate about photography and travel. I’ve worked at TD Ameritrade for over 11 years now
+                        doing a
+                        variety of things, with my most recent role as a developer-in-training. I’m learning on the job
+                        and through
+                        BU about building web applications. So far I’ve experience with HTML, CSS, Angular/Typescript,
+                        SQL, and C#.
+                        Still a relative novice, so I’m excited to learn and be able to do more!</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <p class="text-center"><strong>Blue Dev</strong></p><br>
+                <a href="#demo3" data-toggle="collapse">
+                    <img src="./images/erica.jpg" class="img-circle person" alt="Erica" width="255" height="255">
+                </a>
+                <div id="demo3" class="collapse">
+                    <p><strong>Name: </strong>Erica</p>
+                    <p<strong>Favorite food: </strong></p>
+                        <p><strong>Bio: </strong>Erica is an ABA therapist and DSP who has been working in the field of
+                            human
+                            services
+                            for 7 years. She started her career out as a dietary aid at a nursing home while pursuing
+                            her associates
+                            degree in General Sonography at a community college in Boston Ma. Later she transferred to a
+                            local college
+                            where she then took up an interest in human behavior and psychology. As time went on, Erica
+                            felt like she
+                            had done all she could with human services and wanted a change or more so what could she add
+                            on ! She has
+                            wishes and dreams to develop apps for clients she serves and others who have mental
+                            disabilities. Erica
+                            wishes to develop educational gaming apps and is now taking steps in the right direction by
+                            doing what she
+                            loves. Erica is currently working with/ learning HTML,CSS, JavaScript while pursuing her
+                            Bachelor's degree
+                            in web design/ web development online at Bellevue University.</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div id="quiz" style="display: none;">
-    <embed type="text/html" src="./quiz.html" width="800" height="1300">
-    <!-- <a class="seeResultsStuff" href="#quiz"><button type="button" class="btn btn-warning" onclick="seeResults()">See
-        Results</button></a> -->
-  </div>
+    <!-- quiz -->
+    <div class="container">
+        <div class="jumbotron">
+            <div class="slide" id="beginQuiz">
+                <div class="quiz-container" id='divContainer'>
+                    <div class='question' data-bind="text: question"></div>
+                    <div class="answers"><label><input type='radio' name='answerX' id='answer_a'
+                                data-bind="click: answerClick('a')" /> a. <span
+                                data-bind="text: answerA"></span></label>
+                    </div>
+                    <div class="answers"><label><input type='radio' name='answerX' id='answer_b'
+                                data-bind="click: answerClick('b')" /> b. <span
+                                data-bind="text: answerB"></span></label>
+                    </div>
+                    <div class="answers"><label><input type='radio' name='answerX' id='answer_c'
+                                data-bind="click: answerClick('c')" /> c. <span
+                                data-bind="text: answerC"></label></span>
+                    </div>
+                    <div class="answers"><label><input type='radio' name='answerX' id='answer_d'
+                                data-bind="click: answerClick('d')" /> d. <span
+                                data-bind="text: answerD"></label></span>
+                    </div>
+                    <div class="number" id="number" data-bind="text: number"></div>
+                </div>
 
-  <!-- <div id="results" style="display: none;">
-    <embed type="text/html" src="./results.html" width="800" height="1800">
-  </div> -->
+                <!-- clicky progression -->
+                <div id='divButtons' class="btn-custom">
+                    <button type="button" class="btn btn-info" id="previous" data-bind="click: prev">Previous
+                        Question</button>
+                    <button type="button" class="btn btn-success" id="next" data-bind="click: next">Next
+                        Question</button>
+                    <button type="button" class="btn btn-warning" id="submit" data-bind="click: gradeQuiz">Submit
+                        Quiz</button>
+                </div>
+                <div id="progress"></div>
+            </div>
 
-  <!-- Footer/citation -->
-  <footer class="text-center">
-    <a class="up-arrow" href="#devs" data-toggle="tooltip" title="TO TOP">
-      <span class="glyphicon glyphicon-chevron-up"></span>
-    </a><br><br>
-  </footer>
+            <!-- display results -->
+            <div id='results' class='resultsClass'></div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <a class="up-arrow" href="#home" data-toggle="tooltip" title="TO TOP">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </a><br><br>
+    </footer>
 
 </body>
 
