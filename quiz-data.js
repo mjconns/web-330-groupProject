@@ -14,7 +14,7 @@ const myQuestions = [{
     {
         question: "Inside which HTML element do we put the Javascript (< >)",
         answers: {
-            a: "Script",
+            a: "script",
             b: "javascript",
             c: "scripting",
             d: "js"

@@ -6,7 +6,6 @@ var model = {
     count: myQuestions.length, // get a count of questions.
 
     // bind model to view:
-    num: ko.observable(myQuestions[0].num),
     number: ko.observable(myQuestions[0].number),
     question: ko.observable(myQuestions[0].question),
     answerA: ko.observable(myQuestions[0].answers.a),
@@ -18,16 +17,20 @@ var model = {
     // controller functions:
     next: function () // next question.
     {
+        // debugger;
         this.questions[this.index].answerGiven = this.answerGiven; // question on view to model.
         document.getElementById("answer_" + this.answerGiven).checked = false; // uncheck radio for answer.
         this.index++; // go to the next questions
 
-        if (this.index >= 9) {
-            this.showQuestion(); // show next questions on the view.
+        if (this.index === 9) {
             // if index > count we have reached the end of the quiz
             $("#next").hide(); // hide next button
             $("#submit").show(); // show submit button on view.
+            this.showQuestion(); // show next questions on the view.
             return;
+        } else if (this.index === 10) {
+            debugger;
+            this.gradeQuiz();
         }
         $("#previous").show(); // shew previous button on view if not already visible.
         this.showQuestion(); // show next questions on the view.
@@ -45,7 +48,6 @@ var model = {
 
     showQuestion: function () // show question on view.
     {
-        this.num(this.questions[this.index].num);
         this.number(this.questions[this.index].number);
         this.question(this.questions[this.index].question);
         this.answerA(this.questions[this.index].answers.a);
@@ -106,7 +108,7 @@ var model = {
     },
 };
 
-function restartQuiz () {
+function restartQuiz() {
     // reloads and resets quiz
     location.reload();
-}  
+}
